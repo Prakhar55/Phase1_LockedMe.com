@@ -1,0 +1,68 @@
+package com.lockers.service;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
+
+import com.lockers.database.LockedMeDatabase;
+
+public class LockedMeService {
+	
+	static int cnt=0;
+	
+	private LockedMeDatabase lockeddb = new LockedMeDatabase();
+	
+	public LockedMeService() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public boolean checkEmptyRep() 
+	{
+		if (this.lockeddb.getFiles().size()>0)
+			return true;
+		return false;
+	}
+	public void sortFiles()
+	{
+		
+		Collections.sort(lockeddb.getFiles(),new Comparator<File>() 
+				{
+				@Override
+					public int compare(File o1, File o2) 
+					{
+						// TODO Auto-generated method stub
+						return o1.getName().compareTo(o2.getName());
+					}
+				});
+	}
+	public void listFiles()
+	{
+		for (File file: lockeddb.getFiles())
+		{
+			System.out.println(file.getName());
+		}
+	}
+	
+	public boolean searchFile(String fname)
+	{
+		cnt=0;
+		for (File file: lockeddb.getFiles())
+		{
+			 if(file.getName().endsWith(fname))
+				 return true;
+			 cnt++;
+		}
+		return false;
+	}
+	
+	public void addFile (String fname)
+	{
+		lockeddb.getFiles().add(new File(lockeddb.getPath(), fname)); 
+		//return true;
+	}
+	public void deleteFile (String fname)
+	{
+		lockeddb.getFiles().remove(cnt) ;
+		//return true;
+	}
+}
