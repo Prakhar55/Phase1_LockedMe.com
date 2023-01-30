@@ -1,0 +1,113 @@
+package com.lockers.userinterface;
+
+import java.util.Scanner;
+
+import com.lockers.service.LockedMeService;
+
+public class LockedMeInterface 
+{
+	/**
+	 * Author : Prakhar Shrivastava
+	 */
+	public static void displayMenu() 
+	{
+		System.out.println("************************************");
+		System.out.println("***********LockedMe.com*************");
+		System.out.println("************************************");
+		System.out.println("***********Developed By :***********\n********Prakhar Shrivastava*********");
+		System.out.println("**prakhar.shrivastava@vodafone.com**");
+		System.out.println("************************************\n\n\n");
+		System.out.println("Please select any of the below options by typing the number infront of the option :\n");
+		System.out.println("1. Arrange the files in ascending order ");
+		System.out.println("2. File Operations ");
+		System.out.println("3. Exit ");
+	}
+	
+	public static void subMenu() 
+	{
+		System.out.println("***********Inside File Operations*************\n");
+		System.out.println("1. Add a file");
+		System.out.println("2. Delete a file");
+		System.out.println("3. Search file");
+		System.out.println("4. Go back");
+		
+	}
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		int userinp ;
+		LockedMeService lms = new LockedMeService();
+		do {
+			displayMenu();
+		
+			try {
+				userinp= sc.nextInt();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("Please provide correct input");
+				sc.nextLine();
+				continue;
+			}
+				
+			switch(userinp)
+			{
+				case 1:
+					//System.out.println("Checking files to display ...\n\n\n");
+					if(lms.checkEmptyRep())
+					{
+						lms.sortFiles();
+						lms.listFiles();
+					}
+					else
+						System.out.println("No files to show. Directory is empty..\n\n");
+					
+					break;
+				case 2:
+					do {
+							subMenu();
+							try {
+								userinp= sc.nextInt();
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								System.out.println("Please provide correct input");
+								sc.nextLine();
+								continue;
+							}
+							switch(userinp) 
+							{
+							case 1:
+								System.out.println("Please provide the file name to add\n");
+								String fname =sc.next();
+								if(lms.searchFile(fname))
+									System.out.println("File already present\n");
+								else
+									lms.addFile(fname);
+								break;
+							case 2:
+								System.out.println("Please provide the file name to delete\n");
+								fname =sc.next();
+								if(lms.searchFile(fname))
+									lms.deleteFile(fname);
+								else
+									System.out.println("File Not Found\n");
+								break;
+							case 3:
+								System.out.println("Please provide the file name to search\n");
+								if(lms.searchFile(sc.next()))
+									System.out.println("File Found\n");
+								else
+									System.out.println("File Not Found\n");
+								break;
+							case 4:
+								break;
+							}
+					   }while(userinp!=4);
+						break;
+				case 3:
+					System.out.println("Thank you !\nClosing the application");
+					System.exit(0);
+					break;
+			}
+		   }	while(1==1);
+	}
+}
